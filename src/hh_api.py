@@ -1,3 +1,5 @@
+import time
+
 import requests
 
 from src.abs_classes import API
@@ -18,7 +20,7 @@ class HeadHunterAPI(API):
         :return: список с запрашиваемыми вакансиями
         """
 
-        req = requests.get(self._url, params={'text': f'NAME:{profession}', 'per_page': 100})
+        req = requests.get(self._url, params={'text': f'NAME:{profession}', 'per_page': 20})
         data = req.json()
         pages = int(data['pages'])
         result = []
@@ -26,7 +28,7 @@ class HeadHunterAPI(API):
             req = requests.get(self._url, params={
                 'text': f'NAME:{profession}',
                 'page': page,
-                'per_page:': 100})
+                'per_page:': 20})
             data = req.json()
-            result.append(data.get('items'))
+            result.extend(data.get('items'))
         return result
