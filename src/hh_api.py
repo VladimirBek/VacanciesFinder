@@ -1,6 +1,6 @@
 import requests
 
-from abs_classes import API
+from src.abs_classes import API
 
 
 class HeadHunterAPI(API):
@@ -15,7 +15,7 @@ class HeadHunterAPI(API):
         """
         Метод для получения списка вакансий по API HeadHunter
         :param profession: Наименование профессии по которой следует провести поиск
-        :return: json файл с запрашиваемыми вакансиями
+        :return: список с запрашиваемыми вакансиями
         """
 
         req = requests.get(self._url, params={'text': f'NAME:{profession}', 'per_page': 100})
