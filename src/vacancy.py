@@ -1,12 +1,14 @@
-
 class Vacancy:
+    vacancy_list = []
 
-    def __init__(self, id, employer, title, salary, description):
+    def __init__(self, id, employer, title, salary, area, url):
         self.id = id
         self.employer = employer
         self.title = title
         self.salary = salary
-        self.description = description
+        self.city = area
+        self.url = url
+        self.vacancy_list.append(self)
 
     def __str__(self):
         return self.title
