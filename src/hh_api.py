@@ -1,6 +1,7 @@
 import requests
 
 from src.abs_classes import API
+from src.vacancy import Vacancy
 
 
 class HeadHunterAPI(API):
@@ -21,14 +22,32 @@ class HeadHunterAPI(API):
             req = requests.get(self._url, params={'text': f'NAME:{profession}', 'per_page': 20})
             data = req.json()
             pages = int(data['pages'])
-            result = []
             for page in range(pages):
                 req = requests.get(self._url, params={
                     'text': f'NAME:{profession}',
                     'page': page,
                     'per_page:': 20})
                 data = req.json()
-                result.extend(data.get('items'))
-            return result
+                for vac in data['items']:
+                    try:
+
+                        if isinstance(vac['salary']['from'], int) and isinstance(vac['salary']['to'], int):
+                            salary = f"от {vac['salary']['from']} до {vac['salary']['to']} {vac['salary']['currency']}"
+                        elif not isinstance(vac['salary']['from'], int) and isinstance(vac['salary']['to'], int):
+                            salary = f"до {vac['salary']['to']} {vac['salary']['currency']}"
+                        elif isinstance(vac['salary']['from'], int) and not isinstance(vac['salary']['to'], int):
+                            salary = f"от {vac['salary']['to']} {vac['salary']['currency']}"
+                        elif not isinstance(vac['salary']['from'], int) and not isinstance(vac['salary']['to'], int):
+                            salary = "не указана"
+                        else:
+                            salary = "не удалось определить"
+                    except TypeError:
+                        salary = "не удалось определить"
+                    Vacancy(vac['id'], vac['employer']['name'], vac['name'], salary, vac['area']['name'],
+                            vac['alternate_url'])
+                print(f'Загружена страница {page+1} из {pages} с портала Head Hunter...')
+            else:
+                print('Все вакансии успешно загружены!')
+            return Vacancy.vacancy_list
         except TypeError:
             print('Проблема с доступом к API HeadHunter')
