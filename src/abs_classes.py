@@ -20,6 +20,11 @@ class FileMaker(ABC):
     """
 
     @abstractmethod
+    def get_info(self):
+        """Получение вакансий в формате list"""
+        pass
+
+    @abstractmethod
     def add_vacancy(self, vacancy):
         """Метод для добавления вакансии в файл"""
         pass
