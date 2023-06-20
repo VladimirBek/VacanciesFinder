@@ -29,23 +29,35 @@ class SuperJobAPI(API):
                 for vac in data['objects']:
                     try:
                         if vac["payment_from"] != 0 and vac["payment_to"] != 0:
-                            payment = f'от {vac["payment_from"]} до {vac["payment_to"]} {vac["currency"]}'
+                            payment_from = vac["payment_from"]
+                            payment_to = vac["payment_to"]
+                            currency = vac["currency"]
                         elif vac["payment_from"] == 0 and vac["payment_to"] != 0:
-                            payment = f'до {vac["payment_to"]} {vac["currency"]}'
+                            payment_from = vac["payment_from"]
+                            payment_to = vac["payment_to"]
+                            currency = vac["currency"]
                         elif vac["payment_from"] != 0 and vac["payment_to"] == 0:
-                            payment = f'от {vac["payment_from"]} {vac["currency"]}'
+                            payment_from = vac["payment_from"]
+                            payment_to = vac["payment_to"]
+                            currency = vac["currency"]
                         elif vac["payment_from"] == 0 and vac["payment_to"] == 0:
-                            payment = 'не указана'
+                            payment_from = vac["payment_from"]
+                            payment_to = vac["payment_to"]
+                            currency = 'не указана'
                         else:
-                            payment = 'не удалось определить'
+                            payment_from = 0
+                            payment_to = 0
+                            currency = 'не удалось определить'
                     except KeyError:
-                        payment = 'не удалось определить'
+                        payment_from = 0
+                        payment_to = 0
+                        currency = 'не удалось определить'
                     try:
                         client = vac['client']['title']
                     except KeyError:
                         client = 'не удалось определить'
-                    Vacancy(vac['id'], client, vac['profession'], payment, vac["town"]["title"],
-                            vac['link'])
+                    Vacancy(vac['id'], client, vac['profession'], vac["town"]["title"],
+                            vac['link'], currency, salary_to=payment_to, salary_from=payment_from)
                 print(f'Загружена страница {page + 1} из 5 с портала Super Job...')
             print('Все вакансии загружены!')
             return Vacancy.vacancy_list

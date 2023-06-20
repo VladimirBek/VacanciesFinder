@@ -32,19 +32,31 @@ class HeadHunterAPI(API):
                     try:
 
                         if isinstance(vac['salary']['from'], int) and isinstance(vac['salary']['to'], int):
-                            salary = f"от {vac['salary']['from']} до {vac['salary']['to']} {vac['salary']['currency']}"
+                            salary_from = vac['salary']['from']
+                            salary_to = vac['salary']['to']
+                            currency = vac['salary']['currency']
                         elif not isinstance(vac['salary']['from'], int) and isinstance(vac['salary']['to'], int):
-                            salary = f"до {vac['salary']['to']} {vac['salary']['currency']}"
+                            salary_to = vac['salary']['to']
+                            salary_from = 0
+                            currency = vac['salary']['currency']
                         elif isinstance(vac['salary']['from'], int) and not isinstance(vac['salary']['to'], int):
-                            salary = f"от {vac['salary']['to']} {vac['salary']['currency']}"
+                            salary_from = vac['salary']['from']
+                            salary_to = 0
+                            currency = vac['salary']['currency']
                         elif not isinstance(vac['salary']['from'], int) and not isinstance(vac['salary']['to'], int):
-                            salary = "не указана"
+                            currency = 'не указана'
+                            salary_from = 0
+                            salary_to = 0
                         else:
-                            salary = "не удалось определить"
+                            currency = "не удалось определить"
+                            salary_from = 0
+                            salary_to = 0
                     except TypeError:
-                        salary = "не удалось определить"
-                    Vacancy(vac['id'], vac['employer']['name'], vac['name'], salary, vac['area']['name'],
-                            vac['alternate_url'])
+                        currency = "не удалось определить"
+                        salary_from = 0
+                        salary_to = 0
+                    Vacancy(vac['id'], vac['employer']['name'], vac['name'], vac['area']['name'],
+                            vac['alternate_url'], currency, salary_from=salary_from, salary_to=salary_to)
                 print(f'Загружена страница {page+1} из {pages} с портала Head Hunter...')
             else:
                 print('Все вакансии успешно загружены!')
