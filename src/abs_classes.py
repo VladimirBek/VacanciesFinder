@@ -14,13 +14,13 @@ class API(ABC):
         pass
 
 
-class JSON(ABC):
+class FileMaker(ABC):
     """
     Абстрактный метод для работы с файлами JSON формата
     """
 
     @abstractmethod
-    def add_vacancy(self, id):
+    def add_vacancy(self, vacancy):
         """Метод для добавления вакансии в файл"""
         pass
 
@@ -30,6 +30,16 @@ class JSON(ABC):
         pass
 
     @abstractmethod
-    def get_formate_vacancies(self, id):
-        """Метод для получения вакансий из файла в формате типа Vacancy"""
+    def sort_data(self, key):
+        """ Метод для сортировки вакансий"""
+        pass
+
+    @abstractmethod
+    def filter_by_area(self, area):
+        """Метод для фильтрации вакансий по городу"""
+        pass
+
+    @abstractmethod
+    def filter_by_salary(self, start, to):
+        """Метод для фильтрации вакансий по городу"""
         pass
