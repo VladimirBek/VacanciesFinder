@@ -1,4 +1,7 @@
 class Vacancy:
+    """
+    Класс для работы с вакансиями
+    """
     vacancy_list = []
 
     def __init__(self, id, employer, title, area, url, currency, salary_from=0, salary_to=0):
