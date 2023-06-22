@@ -18,14 +18,13 @@ def get_vacancies(platform: int = 3, profession='') -> list:
         return Vacancy.vacancy_list
     elif platform == 2:
         sj_api = SuperJobAPI()
-        sj_vacancies = sj_api.get_vacancies(profession)
+        sj_api.get_vacancies(profession)
         return Vacancy.vacancy_list
     else:
         hh_api = HeadHunterAPI()
-        hh_vacancies = hh_api.get_vacancies(profession)
+        hh_api.get_vacancies(profession)
         sj_api = SuperJobAPI()
-        sj_vacancies = sj_api.get_vacancies(profession)
-        hh_vacancies.extend(sj_vacancies)
+        sj_api.get_vacancies(profession)
         return Vacancy.vacancy_list
 
 
@@ -43,28 +42,32 @@ def show_info(vacancies: list) -> None:
                   f'Название вакансии: {vac["title"]}\n'
                   f'Зарплата: до {vac["salary_to"]} {vac["currency"]}\n'
                   f'Город: {vac["area"]}\n'
-                  f'Ссылка на вакансию: {vac["url"]}')
+                  f'Ссылка на вакансию: {vac["url"]}'
+                  f'\n')
         elif vac["salary_from"] != 0 and vac["salary_to"] == 0:
             print(f'ID вакансии: {vac["id"]}\n'
                   f'Организация: {vac["employer"]}\n'
                   f'Название вакансии: {vac["title"]}\n'
                   f'Зарплата: от {vac["salary_from"]} {vac["currency"]}\n'
                   f'Город: {vac["area"]}\n'
-                  f'Ссылка на вакансию: {vac["url"]}')
+                  f'Ссылка на вакансию: {vac["url"]}'
+                  f'\n')
         elif vac["salary_from"] != 0 and vac["salary_to"] != 0:
             print(f'ID вакансии: {vac["id"]}\n'
                   f'Организация: {vac["employer"]}\n'
                   f'Название вакансии: {vac["title"]}\n'
                   f'Зарплата: от {vac["salary_from"]} до {vac["salary_to"]} {vac["currency"]}\n'
                   f'Город: {vac["area"]}\n'
-                  f'Ссылка на вакансию: {vac["url"]}')
+                  f'Ссылка на вакансию: {vac["url"]}'
+                  f'\n')
         else:
             print(f'ID вакансии: {vac["id"]}\n'
                   f'Организация: {vac["employer"]}\n'
                   f'Название вакансии: {vac["title"]}\n'
                   f'Зарплата: {vac["currency"]}\n'
                   f'Город: {vac["area"]}\n'
-                  f'Ссылка на вакансию: {vac["url"]}')
+                  f'Ссылка на вакансию: {vac["url"]}'
+                  f'\n')
 
 
 def user_interaction():
@@ -80,7 +83,7 @@ def user_interaction():
         print('Введено неверное значение. Введите целое число от 1 до 3')
         user_interaction()
 
-    choose_profession = input('Введите название профессии для поиска вакансий')
+    choose_profession = input('Введите название профессии для поиска вакансий:\n')
     vacancies = get_vacancies(choose_platform, choose_profession)
     if not vacancies:
         print('По Вашему запросу вакансий не найдено')
@@ -136,13 +139,13 @@ def user_interaction():
                 try:
                     start = int(input('Введите минимальное значение зарплаты:\n'
                                       'Если минимальное значение не интересует, '
-                                      'то введите произвольное значение или нажмите Enter'))
+                                      'то введите произвольное значение или нажмите Enter\n'))
                 except ValueError:
                     start = 0
                 try:
                     to = int(input('Введите максимальное значение зарплаты:\n'
                                    'Если максимальное значение не интересует, '
-                                   'то введите произвольное значение или нажмите Enter'))
+                                   'то введите произвольное значение или нажмите Enter\n'))
                 except ValueError:
                     to = 0
                 show_info(js.filter_by_salary(start=start, to=to))
