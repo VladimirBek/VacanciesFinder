@@ -56,7 +56,7 @@ class SuperJobAPI(API):
                         client = vac['client']['title']
                     except KeyError:
                         client = 'не удалось определить'
-                    Vacancy(vac['id'], client, vac['profession'], vac["town"]["title"],
+                    Vacancy(str(vac['id']), client, vac['profession'], vac["town"]["title"],
                             vac['link'], currency, salary_to=payment_to, salary_from=payment_from)
                 print(f'Загружена страница {page + 1} из 5 с портала Super Job...')
             print('Все вакансии загружены!')

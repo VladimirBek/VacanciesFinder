@@ -107,7 +107,6 @@ def user_interaction():
         elif action == '2':
             vac_id = input('Введите ID вакансии, которую хотите удалить из списка:\n')
             js.del_vacancy(vac_id)
-            print('Выбранная вакансия удалена')
         elif action == '3':
             sort_by = input('Выберите признак для сортировки:\n'
                             '1 - Сортировка по алфавиту\n'
