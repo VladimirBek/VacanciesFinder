@@ -26,7 +26,7 @@ class JsonSaver(FileMaker):
         :return: None. Вакансии записываются в файл.
         """
         data = vacancy.__dict__
-        lst = json.load(open('Vacancies_info.json'))
+        lst = self.get_info()
         lst.append(data)
         with open('Vacancies_info.json', 'w', encoding='utf-8') as file:
             json.dump(lst, file, indent=2, ensure_ascii=False)
@@ -40,8 +40,15 @@ class JsonSaver(FileMaker):
         with open('Vacancies_info.json', 'r+', encoding='utf-8') as file:
             data: list = json.load(file)
         for vac in data:
+            if id in vac.values():
+                break
+        else:
+            print("Вакансии с таким ID нет в списке")
+            return
+        for vac in data:
             if id == vac['id']:
                 data.remove(vac)
+                print('Вакансия успешно удалена')
         with open('Vacancies_info.json', 'w', encoding='utf-8') as file:
             json.dump(data, file, indent=2, ensure_ascii=False)
 
